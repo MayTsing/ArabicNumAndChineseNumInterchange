@@ -91,7 +91,7 @@ begin
 
   Result := chnStr;
 
-  // 处理一十至一十九问题.
+  // 处理十输出为一十问题
   if ((Copy(Result, 1, 1) = '一') and (Copy(Result, 2, 1) = '十')) then
     Result := Copy(Result, 2, Length(Result));
 end;
