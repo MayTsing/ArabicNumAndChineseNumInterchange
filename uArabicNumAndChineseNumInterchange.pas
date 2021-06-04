@@ -1,5 +1,5 @@
 /// <summary>
-/// ÊµÏÖ²Î¿¼https://segmentfault.com/a/1190000004881457
+/// å®ç°å‚è€ƒhttps://segmentfault.com/a/1190000004881457
 /// </summary>
 
 unit uArabicNumAndChineseNumInterchange;
@@ -10,12 +10,12 @@ uses
   Generics.Collections;
 
 const
-  // µ¥¸öÊı×Ö×ª»»ÓÃÊı×é
-  chnNumChar: array[0..9] of string = ('Áã', 'Ò»', '¶ş', 'Èı', 'ËÄ', 'Îå', 'Áù', 'Æß', '°Ë', '¾Å');
-  // ½ÚÈ¨Î»Êı×é
-  chnUnitSection: array[0..4] of string = ('', 'Íò', 'ÒÚ', 'ÍòÒÚ', 'ÒÚÒÚ');
-  // ½ÚÄÚÈ¨Î»Êı×é
-  chnUnitChar: array[0..3] of string = ('', 'Ê®', '°Ù', 'Ç§');
+  // å•ä¸ªæ•°å­—è½¬æ¢ç”¨æ•°ç»„
+  chnNumChar: array[0..9] of string = ('é›¶', 'ä¸€', 'äºŒ', 'ä¸‰', 'å››', 'äº”', 'å…­', 'ä¸ƒ', 'å…«', 'ä¹');
+  // èŠ‚æƒä½æ•°ç»„
+  chnUnitSection: array[0..4] of string = ('', 'ä¸‡', 'äº¿', 'ä¸‡äº¿', 'äº¿äº¿');
+  // èŠ‚å†…æƒä½æ•°ç»„
+  chnUnitChar: array[0..3] of string = ('', 'å', 'ç™¾', 'åƒ');
   arabNumChar: array[0..9] of Integer = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 type
@@ -31,7 +31,7 @@ type
     FNumCharContrastDic: TDictionary<string, Integer>;
     FChnNameValueMap: TDictionary<string, pChnNameValueRec>;
     /// <summary>
-    /// ½ÚÄÚ×ª»»Ëã·¨
+    /// èŠ‚å†…è½¬æ¢ç®—æ³•
     /// </summary>
     function SectionToChinese(section: Integer): string;
     procedure InitFChnNameValueMap();
@@ -39,12 +39,12 @@ type
     constructor Create();
     destructor Destroy; override;
     /// <summary>
-    /// °¢À­²®Êı×Ö×ªÖĞÎÄĞ¡Ğ´Êı×Ö
+    /// é˜¿æ‹‰ä¼¯æ•°å­—è½¬ä¸­æ–‡å°å†™æ•°å­—
     /// </summary>
     function ArabicNumToChineseNum(AArabicNum: Integer): string;
 
     /// <summary>
-    /// ÖĞÎÄĞ¡Ğ´Êı×Ö×ª°¢À­²®Êı×Ö
+    /// ä¸­æ–‡å°å†™æ•°å­—è½¬é˜¿æ‹‰ä¼¯æ•°å­—
     /// </summary>
     function ChineseNumToArabicNum(const AChineseNum: string): Integer;
   end;
@@ -91,8 +91,8 @@ begin
 
   Result := chnStr;
 
-  // ´¦ÀíÒ»Ê®ÖÁÒ»Ê®¾ÅÎÊÌâ.
-  if ((Copy(Result, 1, 1) = 'Ò»') and (Copy(Result, 2, 1) = 'Ê®')) then
+  // å¤„ç†ä¸€åè‡³ä¸€åä¹é—®é¢˜.
+  if ((Copy(Result, 1, 1) = 'ä¸€') and (Copy(Result, 2, 1) = 'å')) then
     Result := Copy(Result, 2, Length(Result));
 end;
 
@@ -113,6 +113,9 @@ begin
   secUnit := False;
   
   sChineseNum := AChineseNum;
+  
+  if Copy(sChineseNum, 1, 1) = 'å' then
+    sChineseNum := 'ä¸€' + sChineseNum;
 
   for I := 1 to Length(sChineseNum) do
   begin
@@ -143,10 +146,6 @@ begin
   end;
 
   Result := rtn + section;
-
-  // ´¦ÀíÒ»Ê®ÖÁÒ»Ê®¾ÅÎÊÌâ.
-  if Copy(sChineseNum, 1, 1) = 'Ê®' then
-    Result := 10 + Result;
 end;
 
 constructor TArabicNumAndChineseNumInterchange.Create;
@@ -180,13 +179,13 @@ end;
 
 procedure TArabicNumAndChineseNumInterchange.InitFChnNameValueMap;
 const
-  chnNameKey: array[0..4] of string = ('Ê®', '°Ù', 'Ç§', 'Íò', 'ÒÚ');
+  chnNameKey: array[0..4] of string = ('å', 'ç™¾', 'åƒ', 'ä¸‡', 'äº¿');
   chnNameValue: array[0..4] of Integer = (10, 100, 1000, 10000, 100000000);
 var
   I, iValue: Integer;
   aChnNameValueRec: pChnNameValueRec;
 begin
-  // ÖĞÎÄÈ¨Î»×ª»»³É10µÄÎ»Êı¼°½ÚÈ¨±êÖ¾
+  // ä¸­æ–‡æƒä½è½¬æ¢æˆ10çš„ä½æ•°åŠèŠ‚æƒæ ‡å¿—
   for I := Low(chnNameKey) to High(chnNameKey) do
   begin
     New(aChnNameValueRec);
